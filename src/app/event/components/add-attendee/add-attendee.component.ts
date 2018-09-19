@@ -1,15 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Attendee } from '../../../models/attendee';
 
 @Component({
   selector: 'app-add-attendee',
   templateUrl: './add-attendee.component.html',
-  styleUrls: ['./add-attendee.component.css']
+  styleUrls: ['./add-attendee.component.css'],
 })
-export class AddAttendeeComponent implements OnInit {
+export class AddAttendeeComponent {
+  @Output()
+  addAttendee = new EventEmitter<Attendee>();
 
-  constructor() { }
+  addAttendeeForm = new FormGroup({
+    name: new FormControl('', [Validators.required]),
+  });
 
-  ngOnInit() {
+  submit() {
+    const attendee = {
+      name: this.addAttendeeForm.value.name,
+      attending: true,
+      guests: 0,
+    };
+    this.addAttendee.emit(attendee);
   }
-
 }
